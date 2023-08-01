@@ -8,7 +8,7 @@ class InfluxClientWrapper(InfluxDBClient):
 
     def query(self, query: str, params=None, bind_params=None, epoch=None, expected_response_code=200, database=None,
               raise_errors=True, chunked=False, chunk_size=0, method=u'GET'):
-        url = f"http://{self.url}/query"
+        url = f"{self.url}/query"
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
