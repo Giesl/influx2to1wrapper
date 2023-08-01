@@ -15,16 +15,18 @@ class InfluxClientWrapper(InfluxDBClient):
             "Authorization": f"Token {self.token}"
         }
 
-        params = {
+        new_params = {
             "orgID": self.org,
             "db": database,
             "rp": "autogen",
             "q": query
         }
 
+        params = params.update(new_params)
+
         response = requests.get(url, headers=headers, params=params)
 
-        if response.status_code == 200:
+        if response.status_code == expected_response_code:
             # Expected response:
             # [
             #     {'results': [
@@ -69,7 +71,6 @@ class InfluxClientWrapper(InfluxDBClient):
 
         # mapping of old tags annotations (influx 1.x)
         point: dict
-        influx_points = []
         for point in points:
             if type(point) is dict and "tags" not in point.keys():
                 point["tags"] = tags
